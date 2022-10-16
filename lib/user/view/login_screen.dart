@@ -24,13 +24,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final dio = Dio();
-    // localhost for emulator
-    final emulatorIp = '10.0.2.2:3000';
-    // localhost for simulator
-    final simulatorIp = '127.0.0.1:3000';
-
-    // final ip = Platform.isIOS ? simulatorIp : emulatorIp;
-    final ip = '172.30.1.40:3000';
 
     return DefaultLayout(
       child: SingleChildScrollView(
@@ -92,8 +85,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     );
                     final refreshToken = resp.data['refreshToken'];
                     final accessToken = resp.data['accessToken'];
-                    await storage.write(key: 'REFRESH_TOKEN_KEY', value: refreshToken);
-                    await storage.write(key: 'ACCESS_TOKEN_KEY', value: accessToken);
+
+                    await storage.write(key: REFRESH_TOKEN_KEY, value: refreshToken);
+                    await storage.write(key: ACCESS_TOKEN_KEY, value: accessToken);
 
                       Navigator.of(context).push(
                         MaterialPageRoute(
@@ -106,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     primary: PRIMARY_COLOR,
                   ),
                   child: Text(
-                    'SIgn In',
+                    'Sign In',
                   ),
                 ),
                 SizedBox(
@@ -115,19 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextButton(
                   onPressed: () async {
                     try {
-                      final refreshToken =
-                          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RAY29kZWZhY3RvcnkuYWkiLCJzdWIiOiJmNTViMzJkMi00ZDY4LTRjMWUtYTNjYS1kYTlkN2QwZDkyZTUiLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTY2NTMzMTY2MSwiZXhwIjoxNjY1NDE4MDYxfQ.pPDRXjkjeXvPSDd6iro6AeX66WMkvm9T-YyJypngwso, accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RAY29kZWZhY3RvcnkuYWkiLCJzdWIiOiJmNTViMzJkMi00ZDY4LTRjMWUtYTNjYS1kYTlkN2QwZDkyZTUiLCJ0eXBlIjoiYWNjZXNzIiwiaWF0IjoxNjY1MzMxNjYxLCJleHAiOjE2NjUzMzE5NjF9.2hElem2uwlIv229f-C0pFfTREd_SEC_fVceaKEoii6c';
-                      String uri = 'http://$ip/auth/token';
-                      print(uri);
-                      final resp = await dio.post(
-                        uri,
-                        options: Options(
-                          headers: {
-                            'authorization': 'Bearer $refreshToken',
-                          },
-                        ),
-                      );
-                      print(resp.data);
+
                     } on DioError catch (e) {
                       e.toString();
                     }
