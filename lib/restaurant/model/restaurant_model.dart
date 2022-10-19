@@ -45,6 +45,4 @@ class RestaurantModel {
       deliveryFee: json['deliveryFee'],
     );
   }
-
-
 }

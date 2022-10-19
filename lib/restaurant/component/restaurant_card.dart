@@ -24,6 +24,12 @@ class RestaurantCard extends StatelessWidget {
   // average rating
   final double ratings;
 
+  // detail
+  final bool isDetail;
+
+  // detail description
+  final String description;
+
   const RestaurantCard({
     Key? key,
     required this.thumbUrl,
@@ -33,11 +39,13 @@ class RestaurantCard extends StatelessWidget {
     required this.deliveryTime,
     required this.deliveryFee,
     required this.ratings,
+    this.isDetail = false,
+    required this.description,
   }) : super(key: key);
-
 
   factory RestaurantCard.fromModel({
     required RestaurantModel model,
+    bool isDetail = false,
   }) {
     return RestaurantCard(
       thumbUrl: Image.network(
@@ -50,46 +58,54 @@ class RestaurantCard extends StatelessWidget {
       ratingsCount: model.ratingsCount,
       deliveryTime: model.deliveryTime,
       deliveryFee: model.deliveryFee,
+      isDetail: isDetail,
+      description: '',
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(
-            12.0,
-          ),
-          child: thumbUrl,
-        ),
+        isDetail
+            ? thumbUrl
+            : ClipRRect(
+                borderRadius: BorderRadius.circular(
+                  12.0,
+                ),
+                child: thumbUrl,
+              ),
         const SizedBox(
           height: 16.0,
         ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              name,
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.w500,
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: isDetail ? 16.0 : 0,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                name,
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 8.0,
-            ),
-            Text(
-              tags.join(
-                '·',
+              const SizedBox(
+                height: 8.0,
               ),
-              style: TextStyle(
-                color: BODY_TEXT_COLOR,
-                fontSize: 14.0,
+              Text(
+                tags.join(
+                  '·',
+                ),
+                style: TextStyle(
+                  color: BODY_TEXT_COLOR,
+                  fontSize: 14.0,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         Row(
           children: [
@@ -113,7 +129,17 @@ class RestaurantCard extends StatelessWidget {
               label: deliveryFee == 0 ? 'Free' : deliveryFee.toString(),
             ),
           ],
-        )
+        ),
+        if (description != '' && isDetail)
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 16.0,
+            ),
+            child: Text(
+              description,
+              textAlign: TextAlign.start,
+            ),
+          ),
       ],
     );
   }
