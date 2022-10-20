@@ -38,8 +38,10 @@ class RestaurantScreen extends StatelessWidget {
             future: pagenateRestaurant(),
             builder: (context, AsyncSnapshot<List> snapshot) {
               if (!snapshot.hasData) {
-                return CircularProgressIndicator(
-                  color: PRIMARY_COLOR,
+                return Center(
+                  child: CircularProgressIndicator(
+                    color: PRIMARY_COLOR,
+                  ),
                 );
               } else {
                 return ListView.separated(

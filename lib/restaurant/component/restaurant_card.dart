@@ -1,4 +1,5 @@
 import 'package:actual/common/const/colors.dart';
+import 'package:actual/restaurant/model/restaurant_detail_model.dart';
 import 'package:actual/restaurant/model/restaurant_model.dart';
 import 'package:flutter/material.dart';
 
@@ -28,7 +29,7 @@ class RestaurantCard extends StatelessWidget {
   final bool isDetail;
 
   // detail description
-  final String description;
+  final String detail;
 
   const RestaurantCard({
     Key? key,
@@ -40,7 +41,7 @@ class RestaurantCard extends StatelessWidget {
     required this.deliveryFee,
     required this.ratings,
     this.isDetail = false,
-    required this.description,
+    required this.detail,
   }) : super(key: key);
 
   factory RestaurantCard.fromModel({
@@ -59,7 +60,7 @@ class RestaurantCard extends StatelessWidget {
       deliveryTime: model.deliveryTime,
       deliveryFee: model.deliveryFee,
       isDetail: isDetail,
-      description: '',
+      detail: model is RestaurantDetailModel ? model.detail : '',
     );
   }
 
@@ -130,13 +131,13 @@ class RestaurantCard extends StatelessWidget {
             ),
           ],
         ),
-        if (description != '' && isDetail)
+        if (detail != '' && isDetail)
           Padding(
             padding: const EdgeInsets.symmetric(
               vertical: 16.0,
             ),
             child: Text(
-              description,
+              detail,
               textAlign: TextAlign.start,
             ),
           ),
